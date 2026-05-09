@@ -6,6 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useId, useState } from "react";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export const createUserSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -42,17 +43,17 @@ export default function CreateUserForm() {
       if (!res.ok) {
         const errorBody = await res.json();
         toast.dismiss(toastId);
-        setPreview(null)
+        setPreview(null);
         toast.error(errorBody.message || "Failed to create user");
       }
       toast.dismiss(toastId);
-      setPreview(null)
+      setPreview(null);
       return res.json();
     },
 
     onSuccess: (data) => {
       reset();
-      setPreview(null)
+      setPreview(null);
       toast.success(data.message || "user created sucessfully");
     },
   });
@@ -75,11 +76,28 @@ export default function CreateUserForm() {
 
   return (
     <section className="w-full py-12 md:py-16 lg:py-20 bg-white dark:bg-zinc-950">
+           {(isPending) && (
+        <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40">
+          <div className="bg-white dark:bg-zinc-900 rounded-xl p-8 flex flex-col items-center shadow-xl border border-zinc-300 dark:border-zinc-700">
+            <span className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-indigo-500 border-t-indigo-300 mb-4" />
+            <span className="text-indigo-700 dark:text-indigo-300 font-medium">
+              Logging in...
+            </span>
+          </div>
+        </div>
+      )}
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8 flex flex-col items-center min-h-[calc(100vh-96px)] justify-center">
         <div
           className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm 
             p-4 md:p-5 lg:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
         >
+          <Link
+            href="/"
+            className="text-sm font-semibold text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring rounded transition px-0.5 py-0.5"
+            tabIndex={0}
+          >
+            ← Home
+          </Link>
           <h1 className="text-2xl font-bold tracking-tight md:text-3xl lg:text-4xl text-zinc-900 dark:text-zinc-100 text-center mb-8">
             Create User
           </h1>
@@ -263,6 +281,19 @@ export default function CreateUserForm() {
               )}
             </button>
           </form>
+
+          <div className="text-sm text-center w-full mt-2">
+            <span className="text-muted-foreground">
+              Already have an account?
+            </span>
+
+            <Link
+              className="text-primary font-semibold hover:underline cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded transition"
+              href="/login"
+            >
+              signIn
+            </Link>
+          </div>
         </div>
       </div>
     </section>

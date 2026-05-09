@@ -3,7 +3,9 @@ import { Geist, Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
 
 import "./globals.css";
 import { Toaster } from "sonner";
+import QueryProviders from "@/providers/QueryProviders";
 import { ToastContainer } from "react-toastify";
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,7 +18,8 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "bitebase - Premium Food Delivery",
-  description: "Discover and order delicious meals from top restaurants. Premium food delivery experience.",
+  description:
+    "Discover and order delicious meals from top restaurants. Premium food delivery experience.",
 };
 
 export default function RootLayout({
@@ -37,9 +40,11 @@ export default function RootLayout({
         data-gr-ext-installed=""
         className={`w-full overflow-x-hidden min-h-screen font-sans antialiased bg-background text-foreground`}
       >
+          <QueryProviders>
           {children}
-        <Toaster />
-        <ToastContainer autoClose={1000} theme="dark" />
+         
+          <ToastContainer  />
+        </QueryProviders>
       </body>
     </html>
   );

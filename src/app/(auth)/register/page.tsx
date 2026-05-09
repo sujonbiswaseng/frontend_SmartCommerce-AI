@@ -1,7 +1,7 @@
 import CreateUserForm from '@/components/modules/auth/form/Register'
 import React from 'react'
 
-const Paage = () => {
+const RegisterPage = () => {
   return (
     <div>
         <CreateUserForm/>
@@ -9,4 +9,4 @@ const Paage = () => {
   )
 }
 
-export default Paage
+export default RegisterPage
