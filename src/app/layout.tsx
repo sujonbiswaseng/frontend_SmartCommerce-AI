@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/providers/theme-provider";
+import { Geist, Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
+
 import "./globals.css";
+import { Toaster } from "sonner";
+import { ToastContainer } from "react-toastify";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-sans",
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const mono = JetBrains_Mono({
   subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
-  title: "SmartCommerce AI",
-  description: "Enterprise AI commerce-operator workspace for storefronts.",
+  title: "bitebase - Premium Food Delivery",
+  description: "Discover and order delicious meals from top restaurants. Premium food delivery experience.",
 };
 
 export default function RootLayout({
@@ -25,22 +26,20 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
       suppressHydrationWarning
-      data-theme="light"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      lang="en"
+      className={`font-${inter} font-${mono} font-sans h-full antialiased `}
     >
-      <head>
-        <script
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html:
-              '(function(){try{var t=localStorage.getItem("smartcommerce-theme");if(t==="light"||t==="dark"||t==="midnight"){document.documentElement.dataset.theme=t;}}catch(e){}})();',
-          }}
-        />
-      </head>
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider>{children}</ThemeProvider>
+      <body
+        suppressHydrationWarning
+        data-new-gr-c-s-check-loaded="..."
+        data-gr-ext-installed=""
+        className={`w-full overflow-x-hidden min-h-screen font-sans antialiased bg-background text-foreground`}
+      >
+          {children}
+        <Toaster />
+        <ToastContainer autoClose={1000} theme="dark" />
       </body>
     </html>
   );
