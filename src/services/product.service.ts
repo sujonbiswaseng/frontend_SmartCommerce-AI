@@ -16,21 +16,14 @@ export interface ProductStatusUpdateData {
 
 export const productService = {
   // Create a product
-  createProduct: async (productData: any) => {
+  createProduct: async (productData: FormData) => {
     try {
       const cookieStore = await cookies();
-      const formData = new FormData();
-      const { images, ...rest } = productData;
-
-      formData.append("data", JSON.stringify(rest));
-      if (Array.isArray(images) && images.length > 0) {
-        images.forEach((image: File) => formData.append("files", image));
-      }
-
       const res = await fetch(`${api_url}/api/v1/product`, {
+        credentials:"include",
         method: "POST",
         headers: { Cookie: cookieStore.toString() },
-        body: formData,
+        body: productData,
       });
 
       revalidateTag("product", "max");

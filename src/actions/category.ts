@@ -8,7 +8,6 @@ import { createCategorySchema } from "@/validations/category.validation";
 export const categoryCreate = async (
   data: FormData
 ) => {
-  console.log(data,'datlkaj')
   const name = data.get('name') as string;
   const file = data.get('file') as File;
 

@@ -1,7 +1,16 @@
+'use server'
 import { productService } from "@/services/product.service";
 
-export const createProductAction = async (productData: any) => {
-  return await productService.createProduct(productData);
+export const createProductAction = async (data: FormData) => {
+  try {
+    const res = await productService.createProduct(data);
+    return res;
+  } catch (error: unknown) {
+    return {
+      success: false,
+      message: ""
+    };
+  }
 };
 
 // Get All Products Action
