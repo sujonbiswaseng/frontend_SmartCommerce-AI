@@ -16,7 +16,6 @@ interface NavbarProps {
 }
 
 export default function Navbar({ user }: NavbarProps) {
-  console.log(user,'userdata')
   const [darkMode, setDarkMode] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
