@@ -3,16 +3,13 @@
 import { create } from "zustand";
 interface Product {
   id: number;
+  productId:string;
   title: string;
   price: number;
   quantity: number;
   image :string;
 
 }
-
-// =========================
-// STORE TYPE
-// =========================
 interface CartStore {
   cart: Product[];
 
@@ -32,9 +29,6 @@ interface CartStore {
   
 }
 
-// =========================
-// STORE
-// =========================
 const useCartStore = create<CartStore>((set) => ({
   cart: [],
 
