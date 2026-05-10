@@ -1,11 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
-
-import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,13 +21,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Link, PanelLeftIcon } from "lucide-react"
-import { useRouter, usePathname } from "next/navigation" // <-- Added usePathname
-import { TResponseUserData } from "@/types/user.type"
-import { getNavItemsByRole } from "@/routes/sidebar.nav.item"
+
+import { getNavItemsByRole } from "@/routes/sidebar.navitems"
 import { getDefaultDashboardRoute, UserRole } from "@/lib/authUtils"
+import { useRouter, usePathname } from "next/navigation"
+import { useIsMobile } from "@/hook/use-mobile"
+import { TUser } from "@/types/user.type"
 import { NavSection } from "@/types/dashboard.type"
-import Notfounddata from "../Notfounddata"
-import { getIconComponent } from "@/lib/IconMapper"
+import { getIconComponent } from "@/lib/iconMapper"
+import { mergeProps } from "@base-ui/react/merge-props"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -169,7 +168,7 @@ function Sidebar({
   side?: "left" | "right"
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none",
-  userinfo: TResponseUserData
+  userinfo: TUser
 }) {
   const router = useRouter()
   const pathname = usePathname() // <-- Get active path
@@ -192,11 +191,7 @@ function Sidebar({
 
   if (isMobile) {
     const userRole = userinfo?.role as UserRole;
-    if (!userRole) {
-      <Notfounddata content="No user role detected. Please contact support." />
- 
-    }
-    const navItems: NavSection[] = getNavItemsByRole(userRole);
+    const navItems: NavSection[] = getNavItemsByRole(userRole) ??[];
     const dashboardHome = getDefaultDashboardRoute(userRole);
 
     return (
@@ -222,7 +217,7 @@ function Sidebar({
             {/* Logo / Brand */}
             <div className="h-16 flex items-center border-b px-6 flex-shrink-0">
               <button onClick={() => router.push(dashboardHome || "/")} className="">
-                <span className="text-xl font-bold text-primary">BiteBase</span>
+                <span className="text-xl font-bold text-primary">lumen</span>
               </button>
             </div>
             {/* Navigation Area */}
