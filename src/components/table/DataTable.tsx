@@ -25,11 +25,13 @@ type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
 
   data: TData[];
+  renderRowActions?: (row: TData) => React.ReactNode;
 };
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  renderRowActions
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] =
     useState<SortingState>([]);
@@ -104,6 +106,15 @@ export function DataTable<TData, TValue>({
                         )}
                       </TableCell>
                     ))}
+
+                      {/* ACTION CELL */}
+                  {renderRowActions && (
+                    <TableCell>
+                      {renderRowActions(
+                        row.original
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
           ) : (

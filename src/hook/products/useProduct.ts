@@ -10,10 +10,14 @@ export const useProducts = () => {
     queryKey: ["products"],
 
     queryFn: async () => {
-      const res =
-        await getAllProductsAction();
-
-      return res.data;
+      const res = await getAllProductsAction();
+      console.log(res, 'sdfsdfsdfsdfsf');
+      
+      if (!res || !res.success) {
+        throw new Error(res?.message || 'Failed to fetch products');
+      }
+      
+      return res.data || [];
     },
   });
 };

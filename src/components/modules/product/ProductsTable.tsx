@@ -3,6 +3,7 @@
 
 "use client";
 
+import { getAllProductsAction } from "@/actions/product.actions";
 import { FilterPanel } from "@/components/shared/filter/FilterInput";
 import { useFilter } from "@/components/shared/filter/ReuseableFilter";
 import { productColumns } from "@/components/table/ columns/product.columns";
@@ -10,15 +11,38 @@ import { DataTable } from "@/components/table/DataTable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts } from "@/hook/products/useProduct";
 import { TFilterField } from "@/types/filter.type";
+import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence,motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
 export default function ProductsTable(initialQueryString:any) {
-  const {
-    data,
-    isLoading,
-  } = useProducts();
+ const {data,isLoading,isError}=useQuery({
+    queryKey: ["products"],
+
+    queryFn: async () => {
+      const res =
+        await getAllProductsAction(initialQueryString);
+        console.log(res,'sdfsdfsdfsdfsf')
+      return res.data;
+    },
+  });  
+
+  const actions=(row:any) => (
+    <div className="flex gap-2">
+      <button className="px-3 py-1 bg-blue-500 text-white rounded">
+        Edit
+      </button>
+
+      <button className="px-3 py-1 bg-red-500 text-white rounded">
+        Delete
+      </button>
+
+      <button className="px-3 py-1 bg-gray-700 text-white rounded">
+        View
+      </button>
+    </div>
+  )
 
   const router = useRouter();
   const [tableData, setTableData] = useState(data);
@@ -143,6 +167,21 @@ export default function ProductsTable(initialQueryString:any) {
       <DataTable
         columns={productColumns}
         data={data || []}
+        renderRowActions={(row) => (
+          <div className="flex gap-2">
+            <button className="px-3 py-1 bg-blue-500 text-white rounded">
+              Edit
+            </button>
+      
+            <button className="px-3 py-1 bg-red-500 text-white rounded">
+              Delete
+            </button>
+      
+            <button className="px-3 py-1 bg-gray-700 text-white rounded">
+              View
+            </button>
+          </div>
+        )}
       />
     </div>
     </div>

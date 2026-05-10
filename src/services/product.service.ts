@@ -69,7 +69,9 @@ export const productService = {
 
       const res = await fetch(url.toString(), config);
       const data = await res.json();
+      console.log(data,'datas')
       const result = data.data?.data as TResponseProduct[];
+      console.log(result,'dslkfjsdf')
 
       if (!res.ok) {
         const error = data as ApiErrorResponse;
@@ -82,7 +84,7 @@ export const productService = {
       return {
         success: data.success,
         message: data.message || "Products retrieved successfully",
-        data: result,
+        data: data.data,
         pagination: data.data?.pagination,
       };
     } catch (error) {
