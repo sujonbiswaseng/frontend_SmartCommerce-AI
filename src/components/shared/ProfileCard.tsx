@@ -39,6 +39,9 @@ const getSettingsLink = (role: string) =>
     : '/'
 
 export default function ProfileCard({ profile }: { profile: TUser }) {
+  if(!profile){
+    return null
+  }
   const defaultProfile =
     'https://res.cloudinary.com/drmeagmkl/image/upload/v1766941482/chatgpt_m8tmep.png'
 
@@ -66,8 +69,8 @@ export default function ProfileCard({ profile }: { profile: TUser }) {
           whileTap={{ scale: 0.96 }}
         >
           <Image
-            src={profile.image || defaultProfile}
-            alt={profile.name}
+            src={defaultProfile}
+            alt={profile?.name}
             width={40}
             height={40}
             className="object-cover w-10 h-10 rounded-full border-2 border-background"

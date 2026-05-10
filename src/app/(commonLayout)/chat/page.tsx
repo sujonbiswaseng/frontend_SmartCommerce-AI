@@ -1,13 +1,14 @@
 
 // import ChatApp  from '@/components/chat/Chat'
+import  ChatPage  from '@/components/chat/Chat'
 import React from 'react'
 
-const ChatPage = () => {
+const ChatPag= () => {
   return (
-    <div className="relative left-1/2 w-screen -translate-x-1/2">
+    <div className="mx-auto w-full max-w-[1440px]">
       {/* <ChatApp /> */}
+      <ChatPage/>
     </div>
   )
 }
-
-export default ChatPage
+export default ChatPag

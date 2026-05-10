@@ -1,10 +1,14 @@
 import Navbar from '@/components/shared/Navbar'
+import { getSession } from '@/services/auth.service'
+import { TUser } from '@/types/user.type'
 import React from 'react'
 
-const CommonLayout = ({children}:{children:React.ReactNode}) => {
+const CommonLayout =async ({children}:{children:React.ReactNode}) => {
+  const userinfo=await getSession()
+  console.log(userinfo,'userinf')
   return (
     <div className='max-w-[1480px] mx-auto'>
-      <Navbar />
+      <Navbar user={userinfo?.data as TUser} />
       {children}
     </div>
   )

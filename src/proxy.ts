@@ -91,6 +91,10 @@ async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/profile/user", request.url));
   }
 
+  if (role === "USER" && pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/profile/user", request.url));
+  }
+
 
 
   if (role === Roles.Admin && pathname.startsWith("/profile")) {

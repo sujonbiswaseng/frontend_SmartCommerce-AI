@@ -32,7 +32,7 @@ export const ManagerNavItem: NavSection[] = [
         items: [
             {
                 title: "Create product",
-                href: "/manager/dashboard/create-meals",
+                href: "/manager/dashboard/create-product",
                 icon: "PlusSquare"
             },
             {
@@ -132,12 +132,12 @@ export const adminNavItems: NavSection[] = [
         title: "product Management",
         items: [
             {
-                title: "meals",
+                title: "products",
                 href: "/admin/dashboard/product",
                 icon: "Utensils"
             },
             {
-                title: "meals",
+                title: "create-product",
                 href: "/admin/dashboard/create-product",
                 icon: "Utensils"
             },

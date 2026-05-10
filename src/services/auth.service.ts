@@ -1,7 +1,6 @@
 "use server"
 import { env } from "@/env";
 import { deleteCookie } from "@/lib/cookiesUtils";
-
 import { setTokenInCookies } from "@/lib/tokenUtils";
 import { Ilogin, TAuthData } from "@/types/auth.type";
 import { ApiErrorResponse, ApiResponse } from "@/types/response.type";
@@ -13,7 +12,7 @@ const api_url = env.BACKEND_URL;
 
 export async function getNewTokensWithRefreshToken(refreshToken  : string) : Promise<boolean> {
     try {
-        const res = await fetch(`${api_url}/api/auth/refresh-token`, {
+const res = await fetch(`${api_url}/api/v1/auth/refresh-token`, {
             method: "POST",
             headers:{
                 "Content-Type": "application/json",
@@ -106,6 +105,7 @@ export async function registerUser(registerData: UserCreateInput) {
 
 
 export async function loginUser(logindata: Ilogin) {
+  console.log(logindata,'logindata')
   try {
     const storeCookies = await cookies();
     const response = await fetch(`${api_url}/api/v1/auth/login`, {
@@ -117,7 +117,9 @@ export async function loginUser(logindata: Ilogin) {
       cache: "no-store",
       body: JSON.stringify(logindata),
     });
+    console.log(response,'responsivedata')
     const body = await response.json();
+    console.log(body,'bodydata')
     const result =body as ApiResponse<TAuthData>
     if (!response.ok || !body.success) {
       const error = body as ApiErrorResponse;

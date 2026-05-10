@@ -3,7 +3,7 @@
 import { AiService } from "@/services/ai.service";
 
 // Generate an Article
-export const generateArticle = async (prompt:string) => {
+export const generateArticle = async ({prompt}:{prompt:string}) => {
   return await AiService.generateArticle(prompt);
 };
 
@@ -13,7 +13,7 @@ export const generateRecommendations = async (input: any) => {
 };
 
 // Chat Assistant
-export const chatAssistant = async (prompt: string) => {
+export const chatAssistant = async (prompt: any) => {
   return await AiService.chatAssistant(prompt);
 };
 

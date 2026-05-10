@@ -34,21 +34,29 @@ const UserLogin = () => {
   const [loading, setLoading] = React.useState(false);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (payload: Ilogin) => userLogin(payload),
+    mutationFn: async (payload: Ilogin) => {
+      const res= await userLogin(payload)
+      if(!res.success){
+        toast.error(res.message)
+      }
+    },
     onMutate: () => setLoading(true),
     onSuccess: (data) => {
+  
       reset();
       setLoading(false);
-      toast.success(data.message || "user login sucessfully", {
+      toast.success("user login sucessfully", {
         autoClose: 2000,
       });
       router.push("/dashboard");
+      return
     },
     onError: (error: any) => {
       reset();
       setLoading(false);
       toast.error(error.message || "user login failed", { autoClose: 2000 });
       router.push("/");
+      return
     },
     onSettled: () => {
       setLoading(false);

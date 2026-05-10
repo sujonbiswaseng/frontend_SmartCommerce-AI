@@ -30,12 +30,14 @@ export default function CreateUserForm() {
     resolver: zodResolver(createUserSchema as any),
   });
 
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:5000";
+
   // API Request
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: FormData) => {
       const toastId = toast.loading("Processing request...");
 
-      const res = await fetch("http://localhost:5000/api/v1/auth/register", {
+      const res = await fetch(`${BACKEND_URL}/api/v1/auth/register`, {
         method: "POST",
         body: data,
       });

@@ -9,12 +9,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getIconComponent } from '@/lib/iconMapper';
 import { navItems } from '@/routes/navitems.route';
 import { CartModal } from '../Cartmodel';
+import ProfileCard from './ProfileCard';
 
 interface NavbarProps {
   user?: any | null;
 }
 
 export default function Navbar({ user }: NavbarProps) {
+  console.log(user,'userdata')
   const [darkMode, setDarkMode] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -123,8 +125,11 @@ export default function Navbar({ user }: NavbarProps) {
               <CartModal />
             </div>
             {/* Auth/Profile */}
+           
             {user ? (
-              <div className="flex items-center gap-3">{/* TODO: User menu */}</div>
+              <div className="flex items-center gap-3">
+                 <ProfileCard profile={user}/>
+              </div>
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/login" tabIndex={0}>
@@ -210,7 +215,9 @@ export default function Navbar({ user }: NavbarProps) {
                 {/* Mobile Auth Actions */}
                 <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 flex flex-col gap-4">
                   {user ? (
-                    <div>{/* TODO: user menu */}</div>
+                    <div>
+                      <ProfileCard profile={user}/>
+                    </div>
                   ) : (
                     <>
                       <Link href="/login" tabIndex={0}>

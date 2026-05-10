@@ -6,14 +6,13 @@ import { cookies } from "next/headers";
 const API_BASE_URL = env.BACKEND_URL;
 console.log(API_BASE_URL,'slkjfsdf')
 if (!API_BASE_URL) {
-  throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_API_BASE_URL in your environment variables.");
+  throw new Error("API_BASE_URL is not defined. Please set BACKEND_URL in your environment variables.");
 }
 
 export const AiService = {
   // Generate an Article
   generateArticle: async (prompt: string) => {
     const storeCookies = await cookies();
-    console.log(prompt,'prompt')
     try {
       const response = await fetch(`${API_BASE_URL}/api/v1/ai/generate-artical`, {
         method: "POST",
@@ -25,7 +24,6 @@ export const AiService = {
         body: JSON.stringify({ prompt }),
       });
       const body = await response.json();
-      console.log(body,'boydata')
       if (!response.ok) {
         const error = body;
         return { success: false, message: error.message };
