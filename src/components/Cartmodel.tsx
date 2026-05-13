@@ -30,9 +30,7 @@ function CartBadge({ count }: { count: number }) {
   );
 }
 
-/**
- * CartModal: Enterprise-grade, premium, modern, fully accessible cart modal.
- */
+
 export function CartModal() {
   const {
     cart,

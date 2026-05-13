@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 // import { getSessionAction } from '@/actions/auth.actions'
 // import { getStatsAction } from '@/actions/stats.actions'
 // import DashboardContent from '@/components/dashbaord/DashboardContent'

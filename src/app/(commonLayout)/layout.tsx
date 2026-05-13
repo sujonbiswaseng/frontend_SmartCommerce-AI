@@ -5,7 +5,6 @@ import React from 'react'
 
 const CommonLayout =async ({children}:{children:React.ReactNode}) => {
   const userinfo=await getSession()
-  console.log(userinfo,'userinf')
   return (
     <div className='max-w-[1480px] mx-auto'>
       <Navbar user={userinfo?.data as TUser} />

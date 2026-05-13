@@ -160,6 +160,7 @@ export async function Logout() {
     cache: "no-store",
   });
   const body= await response.json();
+  console.log(body,'body')
   const result = body as ApiResponse<TAuthData> 
   if (!response.ok || !body.success) {
     const data = body as ApiErrorResponse;

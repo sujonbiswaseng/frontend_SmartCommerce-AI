@@ -8,10 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { manageCartStore } from "@/store/CartStore";
 import { OrderForm } from "../modules/orders/OrderContactForm";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
+import useCartStore from "@/store/cart.store";
 
 export interface PaymentCardProps {
   title: string;
@@ -24,10 +24,10 @@ export function PaymentCard({
   description,
   className,
 }: PaymentCardProps) {
-  const { getSubtotal, getDeliveryCharge } = manageCartStore();
-  const subtotal = getSubtotal();
-  const deliveryCharge = getDeliveryCharge();
-  const total = subtotal + deliveryCharge;
+  const {addToCart,cart } = useCartStore();
+  // const subtotal = getSubtotal();
+  // const deliveryCharge = getDeliveryCharge();
+  // const total = subtotal + deliveryCharge;
   const [activeButton, setactiveButton] = useState(false);
 
   // You may want to add loading state if data is async; for demo, keep it instant.
@@ -59,19 +59,19 @@ export function PaymentCard({
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground font-medium">Subtotal</span>
                     <span className="font-semibold text-card-foreground tabular-nums">
-                      ৳ {subtotal.toFixed(2)}
+                      {/* ৳ {subtotal.toFixed(2)} */}
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground font-medium">Delivery Charge</span>
                     <span className="font-semibold text-card-foreground tabular-nums">
-                      ৳ {deliveryCharge.toFixed(2)}
+                      {/* ৳ {deliveryCharge.toFixed(2)} */}
                     </span>
                   </div>
                   <div className="border-t border-border pt-4 flex items-center justify-between">
                     <span className="font-bold text-primary text-base">Total</span>
                     <span className="text-xl font-bold tabular-nums text-primary">
-                      ৳ {total.toFixed(2)}
+                      {/* ৳ {total.toFixed(2)} */}
                     </span>
                   </div>
                 </div>
@@ -93,9 +93,9 @@ export function PaymentCard({
             transition={{ duration: 0.3 }}
             className="w-full max-w-lg mx-auto bg-card rounded-2xl shadow-sm border border-border"
           >
-            <div className="p-6">
+            {/* <div className="p-6">
               <OrderForm deliveryCharge={deliveryCharge} setactiveButton={setactiveButton} />
-            </div>
+            </div> */}
           </motion.div>
         </section>
       </div>

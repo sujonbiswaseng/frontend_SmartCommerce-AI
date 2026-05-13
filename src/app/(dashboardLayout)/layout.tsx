@@ -11,6 +11,15 @@ import React from 'react'
 
 const DashboardLayout = async ({ admin, manager, children }: { admin: React.ReactNode, manager: React.ReactNode, children: React.ReactNode }) => {
   const userinfo = await getSession()
+  if (!userinfo || !userinfo.data) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-lg text-red-500 font-semibold">
+          Failed to load user info. Please login again.
+        </div>
+      </div>
+    )
+  }
   return (
     <div className=''>
        <div className="min-h-svh w-full bg-muted/40">

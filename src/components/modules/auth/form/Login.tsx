@@ -12,17 +12,55 @@ import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
+
+const Admin_Demo_Email = "admin1@gmail.com";
+const Admin_Demo_PASSWORD = "Admin12!@";
+ 
+const Demo_User_Email = "sujonbiswas.devpro@gmail.com";
+const Demo_User_Password = "Sujon12!@";
+
 const UserLogin = () => {
   const router = useRouter();
-  const [email,setemail]=useState('')
+
+  // Use useForm's setValue for controlled value updates
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<Ilogin>({
     resolver: zodResolver(loginSchema as any),
+    defaultValues: {
+      email: "",
+      password: "",
+    }
   });
+
+  // Sync local state for email with react-hook-form
+  const [email, setEmail] = useState("");
+
+  // Keep email state and RHF "email" field consistent
+  // On setValue or input, update both
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setValue("email", e.target.value);
+  };
+
+  // Demo autofill must update both state & RHF values.
+  const handleFillDemo = (emailVal: string, passwordVal: string) => {
+    setEmail(emailVal);
+    setValue("email", emailVal);
+    setValue("password", passwordVal);
+  };
+
+  // Keep email state in sync with RHF on mount or reset
+  React.useEffect(() => {
+    const currentEmail = getValues("email");
+    if (currentEmail !== email) setEmail(currentEmail || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const authClient = createAuthClient();
   const signIn = async () => {
@@ -30,49 +68,49 @@ const UserLogin = () => {
       provider: "google",
     });
   };
+  // eslint-disable-next-line no-console
   console.log(signIn, "sing");
   const [loading, setLoading] = React.useState(false);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (payload: Ilogin) => {
-      const res= await userLogin(payload)
-      if(!res.success){
-        toast.error(res.message)
+      const res = await userLogin(payload);
+      if (!res.success) {
+        toast.error(res.message);
       }
     },
     onMutate: () => setLoading(true),
-    onSuccess: (data) => {
-  
+    onSuccess: () => {
       reset();
+      setEmail(""); // clear local email state also
       setLoading(false);
       toast.success("user login sucessfully", {
         autoClose: 2000,
       });
       router.push("/dashboard");
-      return
+      return;
     },
     onError: (error: any) => {
       reset();
+      setEmail("");
       setLoading(false);
-      toast.error(error.message || "user login failed", { autoClose: 2000 });
+      toast.error(error?.message || "user login failed", { autoClose: 2000 });
       router.push("/");
-      return
+      return;
     },
     onSettled: () => {
       setLoading(false);
     },
   });
 
-
-
-  const handleForgetPassword = async (email: string) => {
-    if (!email) {
+  const handleForgetPassword = async (emailToUse: string) => {
+    if (!emailToUse) {
       toast.error("Please enter your email first.", { theme: "dark" });
       return { success: false };
     }
     try {
       const toastId = toast.loading("Sending reset OTP...");
-      const res = await forgotPasswordEmailOTPAction({ email });
+      const res = await forgotPasswordEmailOTPAction({ email: emailToUse });
       toast.dismiss(toastId);
 
       if (res.success) {
@@ -128,6 +166,29 @@ const UserLogin = () => {
               login User
             </h1>
 
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+              <button
+                type="button"
+                className="px-4 py-2 bg-indigo-100 dark:bg-zinc-800 text-indigo-700 dark:text-indigo-300 rounded-lg text-xs font-semibold hover:bg-indigo-200 dark:hover:bg-zinc-700 transition"
+                onClick={() => {
+                  handleFillDemo(Admin_Demo_Email, Admin_Demo_PASSWORD);
+                }}
+                aria-label="Auto-fill Admin (demo)"
+              >
+                Fill Admin Demo
+              </button>
+              <button
+                type="button"
+                className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-100 rounded-lg text-xs font-semibold hover:bg-zinc-200 dark:hover:bg-zinc-700 transition"
+                onClick={() => {
+                  handleFillDemo(Demo_User_Email, Demo_User_Password);
+                }}
+                aria-label="Auto-fill Demo User"
+              >
+                Fill User Demo
+              </button>
+            </div>
+
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-5"
@@ -150,9 +211,7 @@ const UserLogin = () => {
                   {...register("email")}
                   className="h-12 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm outline-none transition-all focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20"
                   disabled={isPending || loading}
-                  onChange={(e) => {
-                    setemail(e.target.value as string);
-                  }}
+                  onChange={handleEmailChange}
                   aria-invalid={!!errors.email}
                   required
                 />
@@ -177,15 +236,16 @@ const UserLogin = () => {
                    className="text-xs font-semibold text-primary hover:underline focus-visible:ring-2 focus-visible:ring-ring rounded transition px-0.5 py-0.5"
                    aria-label="Forgot password"
                    onClick={async () => {
-                     if (!email) {
+                     const rhfEmail = getValues("email") || email;
+                     if (!rhfEmail) {
                        toast.error("Please enter your email first.", {
                          theme: "dark",
                        });
                        return;
                      }
-                     const res = await handleForgetPassword(email);
+                     const res = await handleForgetPassword(rhfEmail);
                      if (res?.success) {
-                       const encodedEmail = encodeURIComponent(email);
+                       const encodedEmail = encodeURIComponent(rhfEmail);
                        router.push(`/reset-password?email=${encodedEmail}`);
                      }
                    }}
@@ -193,7 +253,7 @@ const UserLogin = () => {
                    Forgot password?
                  </button>
                </div>
-          
+
                 <input
                   id={`password`}
                   type="password"
